@@ -1124,6 +1124,15 @@
             <summary>
             多模型编排器：根据任务角色自动路由到最合适的本地模型。
             实现 IContentGenerator 接口，默认路由到思考模型，保持向后兼容。
+            <para>
+            支持两种后端：
+            <list type="bullet">
+              <item>Ollama（默认，端口 11434）：直接调用 /api/chat</item>
+              <item>OpenAI 兼容（LiteLLM 端口 4000 / LM Studio 端口 1234 / sk- key）：调用 /v1/chat/completions</item>
+            </list>
+            使用 LiteLLM 时，在 litellm_config.yaml 中配置模型别名（fast/thinking/embedding），
+            C# 端只需将 baseUrl 指向 LiteLLM 网关即可，无需修改代码。
+            </para>
             </summary>
         </member>
         <member name="M:AiCli.Core.Chat.MultiModelOrchestrator.GetGenerator(AiCli.Core.Chat.ModelRole)">
@@ -1147,6 +1156,12 @@
         <member name="M:AiCli.Core.Chat.OllamaContentGenerator.#ctor(AiCli.Core.Configuration.Config,System.String,System.Boolean,System.Net.Http.HttpClient)">
             <param name="modelOverride">覆盖 config 中的模型名，用于多模型场景。</param>
             <param name="enableThinking">是否向 Ollama 传 think:true，激活推理模型的思考输出。</param>
+        </member>
+        <member name="T:AiCli.Core.Chat.OpenAICompatibleContentGenerator">
+            <summary>
+            OpenAI 兼容 API 的内容生成器。
+            适用于 LiteLLM 网关、LM Studio、vLLM 及任何暴露 /v1/chat/completions 的服务。
+            </summary>
         </member>
         <member name="T:AiCli.Core.Commands.SlashCommandService">
             <summary>
@@ -1327,6 +1342,13 @@
         <member name="M:AiCli.Core.Configuration.Config.IsOllamaKey">
             <summary>
             Returns true when api key uses the Ollama sentinel value.
+            </summary>
+        </member>
+        <member name="M:AiCli.Core.Configuration.Config.IsOpenAICompatible">
+            <summary>
+            Returns true when the backend speaks OpenAI-compatible /v1/chat/completions.
+            Matches LiteLLM (default port 4000), LM Studio (default port 1234),
+            and any endpoint whose API key starts with "sk-" (standard OpenAI format).
             </summary>
         </member>
         <member name="M:AiCli.Core.Configuration.Config.IsOllamaBaseUrl">

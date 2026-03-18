@@ -1,23 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "D:\\code\\gemini-cli-csharp\\tests\\AiCli.Core.Tests\\AiCli.Core.Tests.csproj": {}
+    "G:\\github\\reactagent-netcore\\tests\\AiCli.Core.Tests\\AiCli.Core.Tests.csproj": {}
   },
   "projects": {
-    "D:\\code\\gemini-cli-csharp\\src\\AiCli.Core\\AiCli.Core.csproj": {
+    "G:\\github\\reactagent-netcore\\src\\AiCli.Core\\AiCli.Core.csproj": {
       "version": "0.1.0",
       "restore": {
-        "projectUniqueName": "D:\\code\\gemini-cli-csharp\\src\\AiCli.Core\\AiCli.Core.csproj",
+        "projectUniqueName": "G:\\github\\reactagent-netcore\\src\\AiCli.Core\\AiCli.Core.csproj",
         "projectName": "AiCli.Core",
-        "projectPath": "D:\\code\\gemini-cli-csharp\\src\\AiCli.Core\\AiCli.Core.csproj",
-        "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "D:\\code\\gemini-cli-csharp\\src\\AiCli.Core\\obj\\",
+        "projectPath": "G:\\github\\reactagent-netcore\\src\\AiCli.Core\\AiCli.Core.csproj",
+        "packagesPath": "D:\\NuGetPackages",
+        "outputPath": "G:\\github\\reactagent-netcore\\src\\AiCli.Core\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\victor\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -25,7 +26,7 @@
           "net8.0"
         ],
         "sources": {
-          "http://nuget.risk-vantagefx.com/NuGet/nuget": {},
+          "D:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
@@ -44,7 +45,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "10.0.200"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
@@ -56,7 +57,7 @@
             },
             "LibGit2Sharp": {
               "target": "Package",
-              "version": "[0.29.0, )"
+              "version": "[0.31.0, )"
             },
             "Microsoft.Extensions.Configuration": {
               "target": "Package",
@@ -106,9 +107,17 @@
               "target": "Package",
               "version": "[5.0.0, )"
             },
+            "System.Net.Http": {
+              "target": "Package",
+              "version": "[4.3.4, )"
+            },
             "System.Text.Json": {
               "target": "Package",
-              "version": "[8.0.0, )"
+              "version": "[8.0.5, )"
+            },
+            "System.Text.RegularExpressions": {
+              "target": "Package",
+              "version": "[4.3.1, )"
             }
           },
           "imports": [
@@ -127,24 +136,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.311/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\code\\gemini-cli-csharp\\src\\AiCli.TestUtils\\AiCli.TestUtils.csproj": {
+    "G:\\github\\reactagent-netcore\\src\\AiCli.TestUtils\\AiCli.TestUtils.csproj": {
       "version": "0.1.0",
       "restore": {
-        "projectUniqueName": "D:\\code\\gemini-cli-csharp\\src\\AiCli.TestUtils\\AiCli.TestUtils.csproj",
+        "projectUniqueName": "G:\\github\\reactagent-netcore\\src\\AiCli.TestUtils\\AiCli.TestUtils.csproj",
         "projectName": "AiCli.TestUtils",
-        "projectPath": "D:\\code\\gemini-cli-csharp\\src\\AiCli.TestUtils\\AiCli.TestUtils.csproj",
-        "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "D:\\code\\gemini-cli-csharp\\src\\AiCli.TestUtils\\obj\\",
+        "projectPath": "G:\\github\\reactagent-netcore\\src\\AiCli.TestUtils\\AiCli.TestUtils.csproj",
+        "packagesPath": "D:\\NuGetPackages",
+        "outputPath": "G:\\github\\reactagent-netcore\\src\\AiCli.TestUtils\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\victor\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -152,15 +162,15 @@
           "net8.0"
         ],
         "sources": {
-          "http://nuget.risk-vantagefx.com/NuGet/nuget": {},
+          "D:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\code\\gemini-cli-csharp\\src\\AiCli.Core\\AiCli.Core.csproj": {
-                "projectPath": "D:\\code\\gemini-cli-csharp\\src\\AiCli.Core\\AiCli.Core.csproj"
+              "G:\\github\\reactagent-netcore\\src\\AiCli.Core\\AiCli.Core.csproj": {
+                "projectPath": "G:\\github\\reactagent-netcore\\src\\AiCli.Core\\AiCli.Core.csproj"
               }
             }
           }
@@ -175,15 +185,31 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "10.0.200"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "LibGit2Sharp": {
+              "target": "Package",
+              "version": "[0.31.0, )"
+            },
             "Microsoft.Extensions.Logging.Abstractions": {
               "target": "Package",
               "version": "[8.0.0, )"
+            },
+            "System.Net.Http": {
+              "target": "Package",
+              "version": "[4.3.4, )"
+            },
+            "System.Text.Json": {
+              "target": "Package",
+              "version": "[8.0.5, )"
+            },
+            "System.Text.RegularExpressions": {
+              "target": "Package",
+              "version": "[4.3.1, )"
             }
           },
           "imports": [
@@ -202,24 +228,25 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.311/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "D:\\code\\gemini-cli-csharp\\tests\\AiCli.Core.Tests\\AiCli.Core.Tests.csproj": {
+    "G:\\github\\reactagent-netcore\\tests\\AiCli.Core.Tests\\AiCli.Core.Tests.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "D:\\code\\gemini-cli-csharp\\tests\\AiCli.Core.Tests\\AiCli.Core.Tests.csproj",
+        "projectUniqueName": "G:\\github\\reactagent-netcore\\tests\\AiCli.Core.Tests\\AiCli.Core.Tests.csproj",
         "projectName": "AiCli.Core.Tests",
-        "projectPath": "D:\\code\\gemini-cli-csharp\\tests\\AiCli.Core.Tests\\AiCli.Core.Tests.csproj",
-        "packagesPath": "C:\\Users\\Lenovo\\.nuget\\packages\\",
-        "outputPath": "D:\\code\\gemini-cli-csharp\\tests\\AiCli.Core.Tests\\obj\\",
+        "projectPath": "G:\\github\\reactagent-netcore\\tests\\AiCli.Core.Tests\\AiCli.Core.Tests.csproj",
+        "packagesPath": "D:\\NuGetPackages",
+        "outputPath": "G:\\github\\reactagent-netcore\\tests\\AiCli.Core.Tests\\obj\\",
         "projectStyle": "PackageReference",
         "fallbackFolders": [
-          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
+          "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages",
+          "C:\\Program Files\\dotnet\\sdk\\NuGetFallbackFolder"
         ],
         "configFilePaths": [
-          "C:\\Users\\Lenovo\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\victor\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],
@@ -227,18 +254,18 @@
           "net8.0"
         ],
         "sources": {
-          "http://nuget.risk-vantagefx.com/NuGet/nuget": {},
+          "D:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
           "net8.0": {
             "targetAlias": "net8.0",
             "projectReferences": {
-              "D:\\code\\gemini-cli-csharp\\src\\AiCli.Core\\AiCli.Core.csproj": {
-                "projectPath": "D:\\code\\gemini-cli-csharp\\src\\AiCli.Core\\AiCli.Core.csproj"
+              "G:\\github\\reactagent-netcore\\src\\AiCli.Core\\AiCli.Core.csproj": {
+                "projectPath": "G:\\github\\reactagent-netcore\\src\\AiCli.Core\\AiCli.Core.csproj"
               },
-              "D:\\code\\gemini-cli-csharp\\src\\AiCli.TestUtils\\AiCli.TestUtils.csproj": {
-                "projectPath": "D:\\code\\gemini-cli-csharp\\src\\AiCli.TestUtils\\AiCli.TestUtils.csproj"
+              "G:\\github\\reactagent-netcore\\src\\AiCli.TestUtils\\AiCli.TestUtils.csproj": {
+                "projectPath": "G:\\github\\reactagent-netcore\\src\\AiCli.TestUtils\\AiCli.TestUtils.csproj"
               }
             }
           }
@@ -253,7 +280,7 @@
           "auditLevel": "low",
           "auditMode": "direct"
         },
-        "SdkAnalysisLevel": "10.0.200"
+        "SdkAnalysisLevel": "9.0.300"
       },
       "frameworks": {
         "net8.0": {
@@ -263,6 +290,10 @@
               "target": "Package",
               "version": "[6.12.0, )"
             },
+            "LibGit2Sharp": {
+              "target": "Package",
+              "version": "[0.31.0, )"
+            },
             "Microsoft.NET.Test.Sdk": {
               "target": "Package",
               "version": "[17.8.0, )"
@@ -270,6 +301,18 @@
             "Moq": {
               "target": "Package",
               "version": "[4.20.70, )"
+            },
+            "System.Net.Http": {
+              "target": "Package",
+              "version": "[4.3.4, )"
+            },
+            "System.Text.Json": {
+              "target": "Package",
+              "version": "[8.0.5, )"
+            },
+            "System.Text.RegularExpressions": {
+              "target": "Package",
+              "version": "[4.3.1, )"
             },
             "coverlet.collector": {
               "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
@@ -304,7 +347,7 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\10.0.200/PortableRuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\9.0.311/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

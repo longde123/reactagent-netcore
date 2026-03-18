@@ -620,6 +620,12 @@ public static class ContentGeneratorFactory
             return new ContentGenerator(config);
         }
 
+        if (config.IsOpenAICompatible())
+        {
+            // LiteLLM / LM Studio / vLLM：统一走多模型编排（内部使用 OpenAI 兼容实现）
+            return new MultiModelOrchestrator(config);
+        }
+
         if (CanUseOllamaApi(config))
         {
             // 多模型模式：嵌入(bge-m3) + 思考(gpt-oss:20b) + 快速执行(qwen2.5-coder:7b)

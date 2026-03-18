@@ -1,0 +1,46 @@
+# LiteLLM 统一网关配置
+# 用法：litellm --config litellm_config.yaml --port 4000
+#
+# aicli settings.json 对应配置：
+#   "baseUrl": "http://localhost:4000"
+#   "apiKey":  "sk-aicli-local"
+#   "fastModel":      "fast"
+#   "thinkingModel":  "thinking"
+#   "embeddingModel": "embedding"
+
+model_list:
+
+  # ── Fast role：LM Studio GPU 推理 ─────────────────────────────────────────
+  # LM Studio 中加载好模型后，这里的 model 名称对应 LM Studio 的 Model ID
+  - model_name: fast
+    litellm_params:
+      model: qwen2.5-coder-7b-instruct  # LM Studio 里显示的 Model ID
+      api_base: http://localhost:1234
+      api_key: lm-studio                         # LM Studio 不校验 key，填任意值
+
+  # ── Thinking role：Ollama 大模型（大显存或 CPU offload）──────────────────
+  - model_name: thinking
+    litellm_params:
+      model: openai/gpt-oss:20b
+      api_base: http://localhost:1234
+      api_key: lm-studio
+
+  # ── Embedding role：Ollama bge-m3 向量模型 ───────────────────────────────
+  - model_name: embedding
+    litellm_params:
+      model: text-embedding-bge-m3
+      api_base: http://localhost:1234
+      api_key: lm-studio
+
+  # ── 可选：云端后备（把下面的 # 去掉即可启用）─────────────────────────────
+  # - model_name: thinking
+  #   litellm_params:
+  #     model: claude-sonnet-4-6
+  #     api_key: os.environ/ANTHROPIC_API_KEY
+
+litellm_settings:
+  telemetry: false
+  # drop_params: true   # 去掉不被后端支持的参数（如 top_k 对 OpenAI 无效）
+
+general_settings:
+  master_key: sk-aicli-local   # aicli apiKey 必须与此一致

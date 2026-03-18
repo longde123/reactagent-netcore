@@ -30,12 +30,21 @@ public enum ModelRole
 /// <summary>
 /// 多模型编排器：根据任务角色自动路由到最合适的本地模型。
 /// 实现 IContentGenerator 接口，默认路由到思考模型，保持向后兼容。
+/// <para>
+/// 支持两种后端：
+/// <list type="bullet">
+///   <item>Ollama（默认，端口 11434）：直接调用 /api/chat</item>
+///   <item>OpenAI 兼容（LiteLLM 端口 4000 / LM Studio 端口 1234 / sk- key）：调用 /v1/chat/completions</item>
+/// </list>
+/// 使用 LiteLLM 时，在 litellm_config.yaml 中配置模型别名（fast/thinking/embedding），
+/// C# 端只需将 baseUrl 指向 LiteLLM 网关即可，无需修改代码。
+/// </para>
 /// </summary>
 public sealed class MultiModelOrchestrator : IContentGenerator, IAsyncDisposable
 {
-    private readonly OllamaContentGenerator _embeddingGenerator;
-    private readonly OllamaContentGenerator _thinkingGenerator;
-    private readonly OllamaContentGenerator _fastGenerator;
+    private readonly IContentGenerator _embeddingGenerator;
+    private readonly IContentGenerator _thinkingGenerator;
+    private readonly IContentGenerator _fastGenerator;
     private readonly HttpClient _httpClient;
     private readonly bool _ownsHttpClient;
 
@@ -44,9 +53,25 @@ public sealed class MultiModelOrchestrator : IContentGenerator, IAsyncDisposable
         _ownsHttpClient = httpClient is null;
         _httpClient = httpClient ?? new HttpClient();
 
-        _embeddingGenerator = new OllamaContentGenerator(config, config.GetEmbeddingModel(), enableThinking: false, _httpClient);
-        _thinkingGenerator  = new OllamaContentGenerator(config, config.GetThinkingModel(),  enableThinking: true,  _httpClient);
-        _fastGenerator      = new OllamaContentGenerator(config, config.GetFastModel(),      enableThinking: false, _httpClient);
+        if (config.IsOpenAICompatible())
+        {
+            // LiteLLM / LM Studio / vLLM：统一走 OpenAI 兼容格式
+            var defaultModel = config.GetModel();
+            var embeddingModel = ResolveModelForOpenAiCompatible(config.GetEmbeddingModel(), defaultModel);
+            var thinkingModel  = ResolveModelForOpenAiCompatible(config.GetThinkingModel(),  defaultModel);
+            var fastModel      = ResolveModelForOpenAiCompatible(config.GetFastModel(),      defaultModel);
+
+            _embeddingGenerator = new OpenAICompatibleContentGenerator(config, embeddingModel, _httpClient);
+            _thinkingGenerator  = new OpenAICompatibleContentGenerator(config, thinkingModel,  _httpClient);
+            _fastGenerator      = new OpenAICompatibleContentGenerator(config, fastModel,      _httpClient);
+        }
+        else
+        {
+            // Ollama 原生格式（/api/chat）
+            _embeddingGenerator = new OllamaContentGenerator(config, config.GetEmbeddingModel(), enableThinking: false, _httpClient);
+            _thinkingGenerator  = new OllamaContentGenerator(config, config.GetThinkingModel(),  enableThinking: true,  _httpClient);
+            _fastGenerator      = new OllamaContentGenerator(config, config.GetFastModel(),      enableThinking: false, _httpClient);
+        }
     }
 
     /// <summary>
@@ -111,9 +136,9 @@ public sealed class MultiModelOrchestrator : IContentGenerator, IAsyncDisposable
 
     public async ValueTask DisposeAsync()
     {
-        await _embeddingGenerator.DisposeAsync();
-        await _thinkingGenerator.DisposeAsync();
-        await _fastGenerator.DisposeAsync();
+        if (_embeddingGenerator is IAsyncDisposable ed) await ed.DisposeAsync();
+        if (_thinkingGenerator  is IAsyncDisposable td) await td.DisposeAsync();
+        if (_fastGenerator      is IAsyncDisposable fd) await fd.DisposeAsync();
 
         if (_ownsHttpClient)
             _httpClient.Dispose();
@@ -129,5 +154,24 @@ public sealed class MultiModelOrchestrator : IContentGenerator, IAsyncDisposable
     {
         var lower = text.ToLowerInvariant();
         return _codeKeywords.Any(k => lower.Contains(k));
+    }
+
+    private static string ResolveModelForOpenAiCompatible(string? configuredModel, string defaultModel)
+    {
+        if (string.IsNullOrWhiteSpace(configuredModel))
+            return defaultModel;
+
+        var model = configuredModel.Trim();
+
+        // 常见角色占位名：若未在网关做 alias，直接发会导致 400（Invalid model name）。
+        // 这里回退到主模型，保证 agent 至少可用。
+        if (model.Equals("fast", StringComparison.OrdinalIgnoreCase) ||
+            model.Equals("thinking", StringComparison.OrdinalIgnoreCase) ||
+            model.Equals("embedding", StringComparison.OrdinalIgnoreCase))
+        {
+            return defaultModel;
+        }
+
+        return model;
     }
 }

@@ -53,7 +53,37 @@ public class Config : IAsyncDisposable
     /// <summary>
     /// Gets the model to use.
     /// </summary>
-    public string GetModel() => _settings.Model ?? "gemini-2.5-flash";
+    public string GetModel()
+    {
+        if (!string.IsNullOrWhiteSpace(_settings.Model))
+        {
+            return _settings.Model!;
+        }
+
+        if (IsOpenAICompatible())
+        {
+            if (!string.IsNullOrWhiteSpace(_settings.ThinkingModel))
+            {
+                return _settings.ThinkingModel!;
+            }
+
+            if (!string.IsNullOrWhiteSpace(_settings.FastModel))
+            {
+                return _settings.FastModel!;
+            }
+
+            if (!string.IsNullOrWhiteSpace(_settings.EmbeddingModel))
+            {
+                return _settings.EmbeddingModel!;
+            }
+
+            throw new InvalidOperationException(
+                "Model not configured for OpenAI-compatible backend. " +
+                "Set 'model' (or at least one of thinkingModel/fastModel/embeddingModel) to a /v1/models id.");
+        }
+
+        return "gemini-2.5-flash";
+    }
 
     /// <summary>
     /// Gets the API key.
@@ -69,6 +99,23 @@ public class Config : IAsyncDisposable
     /// Returns true when api key uses the Ollama sentinel value.
     /// </summary>
     public bool IsOllamaKey() => string.Equals(_settings.ApiKey, "ollama", StringComparison.OrdinalIgnoreCase);
+
+    /// <summary>
+    /// Returns true when the backend speaks OpenAI-compatible /v1/chat/completions.
+    /// Matches LiteLLM (default port 4000), LM Studio (default port 1234),
+    /// and any endpoint whose API key starts with "sk-" (standard OpenAI format).
+    /// </summary>
+    public bool IsOpenAICompatible()
+    {
+        var baseUrl = GetBaseUrl();
+        if (Uri.TryCreate(baseUrl, UriKind.Absolute, out var uri))
+        {
+            if (uri.Port == 1234) return true; // LM Studio default
+            if (uri.Port == 4000) return true; // LiteLLM default
+        }
+        var key = _settings.ApiKey ?? string.Empty;
+        return key.StartsWith("sk-", StringComparison.Ordinal);
+    }
 
     /// <summary>
     /// Returns true when base URL points to an Ollama endpoint.
@@ -172,17 +219,41 @@ public class Config : IAsyncDisposable
     /// <summary>
     /// Gets the embedding model for semantic search / RAG.
     /// </summary>
-    public string GetEmbeddingModel() => _settings.EmbeddingModel ?? "bge-m3";
+    public string GetEmbeddingModel()
+    {
+        if (!string.IsNullOrWhiteSpace(_settings.EmbeddingModel))
+        {
+            return _settings.EmbeddingModel!;
+        }
+
+        return IsOpenAICompatible() ? GetModel() : "bge-m3";
+    }
 
     /// <summary>
     /// Gets the thinking model for complex reasoning and large-context tasks.
     /// </summary>
-    public string GetThinkingModel() => _settings.ThinkingModel ?? "gpt-oss:20b";
+    public string GetThinkingModel()
+    {
+        if (!string.IsNullOrWhiteSpace(_settings.ThinkingModel))
+        {
+            return _settings.ThinkingModel!;
+        }
+
+        return IsOpenAICompatible() ? GetModel() : "gpt-oss:20b";
+    }
 
     /// <summary>
     /// Gets the fast model for quick code edits and simple tasks.
     /// </summary>
-    public string GetFastModel() => _settings.FastModel ?? "qwen2.5-coder:7b";
+    public string GetFastModel()
+    {
+        if (!string.IsNullOrWhiteSpace(_settings.FastModel))
+        {
+            return _settings.FastModel!;
+        }
+
+        return IsOpenAICompatible() ? GetModel() : "qwen2.5-coder:7b";
+    }
 
     /// <summary>
     /// Saves the settings to storage.

@@ -1,0 +1,1 @@
+litellm --config D:\code\gemini-cli-csharp\.aicli\litellm_config.yaml

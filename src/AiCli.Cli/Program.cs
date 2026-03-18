@@ -154,8 +154,7 @@ public class Program
     {
         if (!AnsiConsole.Profile.Capabilities.Interactive)
         {
-            AnsiConsole.MarkupLine("[yellow]终端不支持交互式提示，使用默认非交互模式：聊天（本地生成器）[/]");
-            Environment.SetEnvironmentVariable("AICLI_USE_LOCAL_GENERATOR", "true");
+            AnsiConsole.MarkupLine("[yellow]终端不支持交互式提示，使用默认非交互模式：聊天（按配置路由）[/]");
             return new[] { "chat" };
         }
 

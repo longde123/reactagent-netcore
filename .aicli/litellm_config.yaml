@@ -1,0 +1,21 @@
+model_list:
+  - model_name: thinking
+    litellm_params:
+      model: openai/openai/gpt-oss-20b
+      api_base: http://127.0.0.1:1234/v1
+      api_key: sk-aicli-local
+
+  - model_name: fast
+    litellm_params:
+      model: openai/qwen2.5-coder-7b-instruct
+      api_base: http://127.0.0.1:1234/v1
+      api_key: sk-aicli-local
+
+  - model_name: embedding
+    litellm_params:
+      model: openai/text-embedding-bge-m3
+      api_base: http://127.0.0.1:1234/v1
+      api_key: sk-aicli-local
+
+general_settings:
+  master_key: sk-aicli-local
