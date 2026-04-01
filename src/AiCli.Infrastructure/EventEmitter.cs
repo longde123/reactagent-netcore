@@ -1,4 +1,5 @@
 using AiCli.Core.Logging;
+using Serilog;
 using System.Collections.Concurrent;
 
 namespace AiCli.Core;

@@ -1,3 +1,5 @@
+using AiCli.Core.Types;
+
 namespace AiCli.Core.Telemetry;
 
 /// <summary>

@@ -1,3 +1,4 @@
+using AiCli.Core.Types;
 using System.Text.Json.Serialization;
 
 namespace AiCli.Core.Configuration;

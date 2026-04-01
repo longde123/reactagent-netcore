@@ -22,8 +22,15 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\AiCli.Core\AiCli.Core.csproj" />
+    <ProjectReference Include="..\AiCli.Abstractions\AiCli.Abstractions.csproj" />
+    <ProjectReference Include="..\AiCli.Agents\AiCli.Agents.csproj" />
+    <ProjectReference Include="..\AiCli.Chat\AiCli.Chat.csproj" />
+    <ProjectReference Include="..\AiCli.Configuration\AiCli.Configuration.csproj" />
+    <ProjectReference Include="..\AiCli.Infrastructure\AiCli.Infrastructure.csproj" />
+    <ProjectReference Include="..\AiCli.Policy\AiCli.Policy.csproj" />
+    <ProjectReference Include="..\AiCli.Scheduler\AiCli.Scheduler.csproj" />
     <ProjectReference Include="..\AiCli.Sdk\AiCli.Sdk.csproj" />
+    <ProjectReference Include="..\AiCli.Tools\AiCli.Tools.csproj" />
   </ItemGroup>
 
   <ItemGroup>

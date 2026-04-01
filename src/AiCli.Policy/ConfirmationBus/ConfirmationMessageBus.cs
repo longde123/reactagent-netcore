@@ -1,6 +1,7 @@
 using AiCli.Core.Logging;
 using AiCli.Core.Policy;
 using AiCli.Core.Types;
+using Serilog;
 using System.Collections.Concurrent;
 
 namespace AiCli.Core.ConfirmationBus;

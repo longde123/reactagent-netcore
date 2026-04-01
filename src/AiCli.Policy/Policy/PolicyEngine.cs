@@ -1,5 +1,6 @@
 using AiCli.Core.Logging;
-using AiCli.Core.Tools;
+using AiCli.Core.Types;
+using Serilog;
 using System.Collections.Concurrent;
 using System.Text.Json;
 using System.Text.Json.Nodes;
