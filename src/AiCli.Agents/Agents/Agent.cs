@@ -106,7 +106,7 @@ public abstract class Agent : IAgent
                     {
                         var errorMsg = $"Tool not found: {toolCall.FunctionName}";
                         _logger.Warning(errorMsg);
-                        _messageHistory.Add(CreateToolResultMessage(toolCall.FunctionName, new ToolExecutionResult
+                        _messageHistory.Add(CreateToolResultMessage(toolCall.FunctionName, toolCall.Id, new ToolExecutionResult
                         {
                             IsError = true,
                             Output = errorMsg,
@@ -121,13 +121,13 @@ public abstract class Agent : IAgent
                             var result = await ExecuteToolAsync(tool, toolCall.Arguments, linkedCts.Token);
                             _logger.Information("Tool {Tool} executed. Success: {Success}, OutputLen: {Len}",
                                 toolCall.FunctionName, result.Error is null, result.Output?.Length ?? 0);
-                            _messageHistory.Add(CreateToolResultMessage(toolCall.FunctionName, result));
+                            _messageHistory.Add(CreateToolResultMessage(toolCall.FunctionName, toolCall.Id, result));
                             EmitEvent(AgentEventType.ToolCompleted, callLabel);
                         }
                         catch (Exception ex)
                         {
                             _logger.Error(ex, "Error executing tool: {Tool}", toolCall.FunctionName);
-                            _messageHistory.Add(CreateToolResultMessage(toolCall.FunctionName, new ToolExecutionResult
+                            _messageHistory.Add(CreateToolResultMessage(toolCall.FunctionName, toolCall.Id, new ToolExecutionResult
                             {
                                 IsError = true,
                                 Output = ex.Message,
@@ -573,6 +573,7 @@ The following directory snapshot was collected before reasoning:
     /// </summary>
     protected ContentMessage CreateToolResultMessage(
         string functionName,
+        string toolCallId,
         ToolExecutionResult result)
     {
         return new ContentMessage
@@ -583,6 +584,7 @@ The following directory snapshot was collected before reasoning:
                 new FunctionResponsePart
                 {
                     FunctionName = functionName,
+                    Id = toolCallId,
                     Response = new Dictionary<string, object?>
                     {
                         ["result"] = result.Output,

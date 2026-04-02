@@ -11,11 +11,20 @@ public class PlanAgent : Agent
 {
     private readonly LocalExecutor _executor;
     private readonly List<string> _planSteps = new();
+    private readonly bool _planOnlyMode;
 
+    /// <summary>
+    /// Creates a PlanAgent.
+    /// </summary>
+    /// <param name="id">Agent instance ID.</param>
+    /// <param name="toolRegistry">Tool registry with available tools.</param>
+    /// <param name="chat">Content generator for LLM interaction.</param>
+    /// <param name="planOnlyMode">If true, agent only explores and plans without executing write operations.</param>
     public PlanAgent(
         string id,
         ToolRegistry toolRegistry,
-        IContentGenerator chat)
+        IContentGenerator chat,
+        bool planOnlyMode = false)
         : base(
             id,
             "Plan",
@@ -26,6 +35,7 @@ public class PlanAgent : Agent
             chat)
     {
         _executor = new LocalExecutor();
+        _planOnlyMode = planOnlyMode;
     }
 
     /// <summary>
@@ -163,16 +173,41 @@ public class PlanAgent : Agent
         _planSteps.Clear();
     }
 
-    protected override string? GetSystemInstruction() => """
-        You are a Plan agent specialized in creating and EXECUTING implementation plans.
+    protected override string? GetSystemInstruction()
+    {
+        if (_planOnlyMode)
+        {
+            return """
+                You are a Plan agent in READ-ONLY planning mode.
 
-        CRITICAL RULES:
-        - You MUST use tools to complete tasks. Do NOT just produce a plan — execute it too.
-        - First explore the workspace with list_directory / glob / grep.
-        - Then create files with write_file and run commands with shell.
-        - After execution, verify the result (e.g. dotnet build).
-        - Finish with a brief summary of what was done.
+                CRITICAL RULES:
+                - You MUST use tools to explore the codebase (list_directory, glob, grep, read_file).
+                - Do NOT modify any files. Do NOT run shell commands that change state.
+                - Analyze the task, explore relevant code, and produce a DETAILED implementation plan.
+                - Your plan must include:
+                  1. Summary of what needs to be done
+                  2. Files to be created or modified (with exact paths)
+                  3. Step-by-step implementation details for each file
+                  4. Dependencies and order of operations
+                  5. Verification steps (e.g. build commands to run after changes)
+                - Be specific: include function names, class names, code structure.
+                - Format your plan as a numbered list with clear headings.
 
-        DO NOT stop after planning. Carry out every step with tool calls.
-        """;
+                After exploring, output the FULL implementation plan as your final response.
+                """;
+        }
+
+        return """
+            You are a Plan agent specialized in creating and EXECUTING implementation plans.
+
+            CRITICAL RULES:
+            - You MUST use tools to complete tasks. Do NOT just produce a plan — execute it too.
+            - First explore the workspace with list_directory / glob / grep.
+            - Then create files with write_file and run commands with shell.
+            - After execution, verify the result (e.g. dotnet build).
+            - Finish with a brief summary of what was done.
+
+            DO NOT stop after planning. Carry out every step with tool calls.
+            """;
+    }
 }

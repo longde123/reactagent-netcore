@@ -64,9 +64,13 @@ public class Storage
 
     /// <summary>
     /// Loads settings from user and project configuration.
+    /// Creates a default settings file if none exists at the user level.
     /// </summary>
     public async Task<Settings> LoadSettingsAsync()
     {
+        // Ensure a default settings file exists for first-time users
+        await EnsureDefaultSettingsFileAsync();
+
         var settings = new Settings();
 
         // Load project settings first
@@ -172,6 +176,50 @@ public class Storage
         }
 
         await File.WriteAllTextAsync(path, content);
+    }
+
+    /// <summary>
+    /// Creates a default settings.json with comments if it doesn't exist at the user level.
+    /// </summary>
+    private async Task EnsureDefaultSettingsFileAsync()
+    {
+        if (File.Exists(_userSettingsPath)) return;
+
+        if (!Directory.Exists(_userConfigDir))
+        {
+            Directory.CreateDirectory(_userConfigDir);
+        }
+
+        var defaultJson =
+@"{
+  // AiCli Settings - Configuration file
+  // Uncomment and modify the values below to customize your experience.
+  // This file is located at ~/.aicli/settings.json
+
+  // ""model"": ""gemini-2.5-flash"",
+  // ""apiKey"": ""your-api-key-here"",
+  // ""baseUrl"": ""https://generativelanguage.googleapis.com"",
+  // ""approvalMode"": ""Interactive"",
+  // ""enableAgents"": true,
+  // ""enableBrowserAgent"": false,
+  // ""maxAgentTurns"": 10,
+  // ""agentTimeout"": 300,
+  // ""enableTelemetry"": false,
+  // ""enableCodeAssist"": false,
+  // ""useSandbox"": false,
+  // ""sandbox"": ""none"",
+  // ""maxTokens"": 8192,
+  // ""temperature"": 0.7,
+  // ""topP"": 0.95,
+  // ""topK"": 40,
+  // ""enablePlanMode"": true,
+  // ""memory"": """",
+  // ""embeddingModel"": ""bge-m3"",
+  // ""thinkingModel"": ""gpt-oss:20b"",
+  // ""fastModel"": ""qwen2.5-coder:7b"",
+  // ""extensions"": []
+}";
+        await File.WriteAllTextAsync(_userSettingsPath, defaultJson);
     }
 
     /// <summary>

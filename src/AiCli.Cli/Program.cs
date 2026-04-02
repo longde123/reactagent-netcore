@@ -168,6 +168,7 @@ public class Program
                     "聊天模式（本地生成器）",
                     "聊天模式（Google API）",
                     "Agent 模式（general）",
+                    "Plan 模式（两阶段规划执行）",
                     "单次 Prompt",
                     "退出"
                 }));
@@ -177,8 +178,9 @@ public class Program
             "聊天模式（本地生成器）" => BuildLocalChatArgs(),
             "聊天模式（Google API）" => new[] { "chat" },
             "Agent 模式（general）" => BuildAgentArgs(),
+            "Plan 模式（两阶段规划执行）" => BuildPlanArgs(),
             "单次 Prompt" => BuildPromptArgs(),
-            //_ => Array.Empty<string>()
+            "退出" => Array.Empty<string>(),
             _ => BuildAgentArgs()
         };
     }
@@ -198,5 +200,12 @@ public class Program
     {
         var input = AnsiConsole.Ask<string>("[green]请输入 prompt[/]");
         return new[] { "prompt", input };
+    }
+
+    private static string[] BuildPlanArgs()
+    {
+        AnsiConsole.MarkupLine("[dim]两阶段 Plan 模式：先只读探索并生成计划，审批后再执行。[/]");
+        var task = AnsiConsole.Ask<string>("[green]请输入任务描述[/]");
+        return new[] { "plan", "enter", task };
     }
 }
